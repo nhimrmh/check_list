@@ -306,117 +306,124 @@ class _TaskDetail extends State<taskDetailScene> with SingleTickerProviderStateM
         child: Stack(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 140),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    width: double.infinity,
-                    color: Colors.white,
-                    child: Container(
-                      child: RaisedButton.icon(
-                        onPressed: (){
-                          _inputTaskDetail = new TextEditingController();
-                          _inputTaskDetail.text = "";
-                          showDialog(context: context, child: new Dialog(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Container(
-                                  width: double.infinity,
-                                  child: Container(
-                                    margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
-                                    child: Text(
-                                      "Add new task",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.blueGrey[700]
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.white,
+              child: Padding(
+                padding: EdgeInsets.only(top: 140),
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                          child: Container(
+                            child: RaisedButton.icon(
+                              onPressed: (){
+                                _inputTaskDetail = new TextEditingController();
+                                _inputTaskDetail.text = "";
+                                showDialog(context: context, child: new Dialog(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
+                                          child: Text(
+                                            "Add new task",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.blueGrey[700]
+                                            ),
+                                          ),
+                                        ),
+                                        color: Colors.blueGrey[200],
                                       ),
-                                    ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                                        child: TextField(
+                                          keyboardType: TextInputType.multiline,
+                                          maxLength: null,
+                                          maxLines: null,
+                                          textCapitalization: TextCapitalization.sentences,
+                                          decoration: InputDecoration(
+                                            hintText: "Enter task name",
+                                            contentPadding: EdgeInsets.only(bottom: 5),
+                                            isDense: true,
+                                          ),
+                                          controller: _inputTaskDetail,
+                                        ),
+                                      ),
+                                      RaisedButton.icon(
+                                        onPressed: () {
+                                          if(isEnabled == true){
+                                            addData();
+                                            setState(() {
+                                              Navigator.of(context).pop();
+                                            });
+                                          }
+                                        },
+                                        icon: Icon(Icons.add),
+                                        label: Text("Add"),
+                                        color: Colors.white,
+                                        elevation: 0,
+                                      )
+                                    ],
                                   ),
-                                  color: Colors.blueGrey[200],
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                                  child: TextField(
-                                    keyboardType: TextInputType.multiline,
-                                    maxLength: null,
-                                    maxLines: null,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    decoration: InputDecoration(
-                                      hintText: "Enter task name",
-                                      contentPadding: EdgeInsets.only(bottom: 5),
-                                      isDense: true,
-                                    ),
-                                    controller: _inputTaskDetail,
-                                  ),
-                                ),
-                                RaisedButton.icon(
-                                  onPressed: () {
-                                    if(isEnabled == true){
-                                      addData();
-                                      setState(() {
-                                        Navigator.of(context).pop();
-                                      });
-                                    }
-                                  },
-                                  icon: Icon(Icons.add),
-                                  label: Text("Add"),
-                                  color: Colors.white,
-                                  elevation: 0,
-                                )
-                              ],
+                                ));
+                              },
+                              icon: Icon(Icons.add, color: isEnabled == true ? Colors.teal[700] : Colors.blueGrey[50], size: isEnabled == true ? 25 : 0,),
+                              label: Text(isEnabled == true ? "Add new task" : "...", style: TextStyle(fontSize: 18),),
+                              color: Colors.white,
+                              elevation: 0,
                             ),
-                          ));
-                        },
-                        icon: Icon(Icons.add, color: isEnabled == true ? Colors.teal[700] : Colors.blueGrey[50], size: isEnabled == true ? 25 : 0,),
-                        label: Text(isEnabled == true ? "Add new task" : "...", style: TextStyle(fontSize: 18),),
-                        color: Colors.white,
-                        elevation: 0,
+                          )
                       ),
-                    )
-                  ),
-                  Expanded(
-                    child: ReorderableList(
-                      onReorder: this._reorderCallback,
-                      onReorderDone: this._reorderDone,
-                      child: CustomScrollView(
-                        // cacheExtent: 3000,
-                        slivers: <Widget>[
-                          SliverPadding(
-                              padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context).padding.bottom),
-                              sliver: SliverList(
-                                delegate: SliverChildBuilderDelegate(
-                                      (BuildContext context, int index) {
-                                    return Item(
-                                      data: listTask.list.elementAt(projectIdx).list[index],
-                                      // first and last attributes affect border drawn during dragging
-                                      isFirst: index == 0,
-                                      isLast: index == listTask.list.elementAt(projectIdx).list.length - 1,
-                                      draggingMode: _draggingMode,
-                                      index: index,
-                                      function: updateData,
-                                      setStateFunction: setStateFunction,
-                                    );
-                                  },
-                                  childCount: listTask?.list?.elementAt(projectIdx)?.list?.length ?? 0,
-                                ),
-                              )
+                      Expanded(
+                        child: ReorderableList(
+                          onReorder: this._reorderCallback,
+                          onReorderDone: this._reorderDone,
+                          child: CustomScrollView(
+                            // cacheExtent: 3000,
+                            slivers: <Widget>[
+                              SliverPadding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context).padding.bottom),
+                                  sliver: SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                          (BuildContext context, int index) {
+                                        return Item(
+                                          data: listTask.list.elementAt(projectIdx).list[index],
+                                          // first and last attributes affect border drawn during dragging
+                                          isFirst: index == 0,
+                                          isLast: index == listTask.list.elementAt(projectIdx).list.length - 1,
+                                          draggingMode: _draggingMode,
+                                          index: index,
+                                          function: updateData,
+                                          setStateFunction: setStateFunction,
+                                        );
+                                      },
+                                      childCount: listTask?.list?.elementAt(projectIdx)?.list?.length ?? 0,
+                                    ),
+                                  )
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              decoration: BoxDecoration(
-                color: Colors.blueGrey[50],
+                        ),
+                      )
+                    ],
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blueGrey[50],
+                  ),
+                ),
               ),
             ),
             Container(
               width: double.infinity,
-              color: Colors.blueGrey[50],
+              color: Colors.white,
               child: Container(
                 child: Container(
                   margin: EdgeInsets.only(left: 20, right: 20),
